@@ -54,7 +54,7 @@ while True:
        
         scanEndTime = datetime.datetime.now()
         scanDuration = scanEndTime - scanStartTime
-         print('Scan Completed after {0}'.format)
+        print('Scan Completed after')
     else:
         print("No new devices detected")
         time.sleep(60)
