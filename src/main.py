@@ -90,7 +90,7 @@ while True:
         for vuln in sc.analysis.scan(results['scanResult']['id']):
             vulnCollections[vuln['ip']].append(vuln)
         combinedData = collections.defaultdict(list)
-        for i in devices.response:
+        for i in DEVICELIST.response:
             combinedData[i['managementIpAddress']].append(i)
             counts = Counter(x['riskFactor'] for x in combinedData[i['managementIpAddress']][0]['vulns'])
             combinedData[i['managementIpAddress']][0]['highCount'] = counts['High']
