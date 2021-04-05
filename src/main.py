@@ -11,7 +11,7 @@ es = '' #Elastic Connection
 dnac = '' #DNAC Connection
 sc = '' #Tenable Connection
 DEVICELIST = []
-logging.basicConfig(level=logging.DEBUG)
+logging.basicConfig(level=logging.INFO)
 
 def init():
     global es
@@ -32,7 +32,6 @@ def init():
     sc.login(config['tenable']['username'], config['tenable']['password'])
 
 def extractIPInfo(dnacResponse):
-    logging.info("Extracting IPs from {0}".format(dnacResponse))
     ipList = []
     if hasattr(dnacResponse, 'response'):
         for i in dnacResponse.response:
@@ -47,18 +46,23 @@ def extractIPInfo(dnacResponse):
 def checkNewDevices():
     logging.info("Checking for new devices")
     global DEVICELIST
+    logging.info("DEVICELIST: {0}".format(DEVICELIST))
     devices = dnac.devices.get_device_list()
     logging.info("Extracting IPS")
-    logging.info(DEVICELIST)
+    logging.info("==oldInventory==")
     oldInventory = extractIPInfo(DEVICELIST)
-    logging.info(devices)
+    logging.info(oldInventory)
+    logging.info("==newInventory==")
     newInventory = extractIPInfo(devices)
+    logging.info(newInventory)
+    logging.info("oldInventory: {0}".format(oldInventory))
+    logging.info("newInventory: {0}".format(newInventory))
     if oldInventory == newInventory:
         logging.info("No new devices added")
         return False
     else:
         logging.info("New devices added")
-        DEVICELIST = newInventory
+        DEVICELIST = devices
         return True
 
 init()
@@ -66,8 +70,8 @@ while True:
     result = checkNewDevices()
     if result:
         dnaIPs = []
-        for i in DEVICELIST:
-            dnaIPs.append(i)
+        for i in DEVICELIST.response:
+            dnaIPs.append(i['managementIpAddress'])
         sc.asset_lists.edit('55', ips=dnaIPs)
         results = sc.scans.launch('39')
         scanStartTime = datetime.datetime.now()
