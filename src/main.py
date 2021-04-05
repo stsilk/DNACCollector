@@ -88,7 +88,7 @@ while True:
         logging.info('Scan Completed after')
         vulnCollections = collections.defaultdict(list)
         for vuln in sc.analysis.scan(results['scanResult']['id']):
-            result[vuln['ip']].append(vuln)
+            vulnCollections[vuln['ip']].append(vuln)
         combinedData = collections.defaultdict(list)
         for i in devices.response:
             combinedData[i['managementIpAddress']].append(i)
