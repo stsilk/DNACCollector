@@ -6,6 +6,7 @@
 build1:
   stage: build
   script:
+    - echo "Hello"
     - docker build -t dnacollector .
 
 deploy1:
