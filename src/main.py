@@ -7,7 +7,7 @@ import pprint
 import yaml
 import logging
 import collections
-from collections Import Counter
+from collections import Counter
 
 es = '' #Elastic Connection
 dnac = '' #DNAC Connection
