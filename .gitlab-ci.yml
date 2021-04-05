@@ -8,6 +8,8 @@ build1:
   script:
     - echo "Hello"
     - docker build -t dnacollector .
+    - docker stop dnacollector
+    - docker rm dnacollector
 
 deploy1:
   stage: deploy
