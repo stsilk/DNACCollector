@@ -11,6 +11,7 @@ es = '' #Elastic Connection
 dnac = '' #DNAC Connection
 sc = '' #Tenable Connection
 DEVICELIST = []
+logging.basicConfig(level=logging.DEBUG)
 
 def init():
     global es
