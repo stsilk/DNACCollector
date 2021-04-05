@@ -87,9 +87,12 @@ while True:
         scanDuration = scanEndTime - scanStartTime
         logging.info('Scan Completed after')
         vulnCollections = collections.defaultdict(list)
-        for vuln in sc.analysis.scan(results['scanResult']['id']):
+        for vuln in sc.analysis.scan(runningScanID):
             vulnCollections[vuln['ip']].append(vuln)
         combinedData = collections.defaultdict(list)
+        for i in DEVICELIST.response:
+            i['vulns'] = vulnCollections[i['managementIpAddress']]
+            i['timestamp'] = datetime.datetime.now()
         for i in DEVICELIST.response:
             combinedData[i['managementIpAddress']].append(i)
             counts = Counter(x['riskFactor'] for x in combinedData[i['managementIpAddress']][0]['vulns'])
