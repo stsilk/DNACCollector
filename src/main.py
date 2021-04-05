@@ -5,6 +5,7 @@ import datetime
 import time
 import pprint
 import yaml
+import logging
 
 es = '' #Elastic Connection
 dnac = '' #DNAC Connection
@@ -30,25 +31,29 @@ def init():
     sc.login(config['tenable']['username'], config['tenable']['password'])
 
 def extractIPInfo(dnacResponse):
+    logging.info("Extracting IPs from {0}".format(dnacResponse))
     ipList = []
     try:
         for i in dnacResponse.response:
             print(i['managementIpAddress'])
             ipList.append(i['managementIpAddress'])
+        logging.info("Extracted List: {0}".format(ipList))
         return ipList
     except Exception as e:
+        logging.warn("Could not extract IP List")
         return []
 
 def checkNewDevices():
+    logging.info("Checking for new devices")
     global DEVICELIST
     devices = dnac.devices.get_device_list()
     oldInventory = extractIPInfo(DEVICELIST)
     newInventory = extractIPInfo(devices)
     if oldInventory == newInventory:
-        print("No new devices added")
+        logging.info("No new devices added")
         return False
     else:
-        print("New devices added")
+        logging.info("New devices added")
         DEVICELIST = newInventory
         return True
 
@@ -65,14 +70,14 @@ while True:
         runningScanID = results['scanResult']['id']
         scanStatus = sc.scan_instances.details(runningScanID)['status']
         while scanStatus != 'Completed':
-            print('Still waiting... Status: {0} - {1}'.format(scanStatus, datetime.datetime.now()))
+            logging.info('Still waiting... Status: {0} - {1}'.format(scanStatus, datetime.datetime.now()))
             time.sleep(30)
             scanStatus = sc.scan_instances.details(runningScanID)['status']
         scanEndTime = datetime.datetime.now()
         scanDuration = scanEndTime - scanStartTime
-        print('Scan Completed after')
+        logging.info('Scan Completed after')
     else:
-        print("No new devices detected")
+        logging.info("No new devices detected")
         time.sleep(60)
 
 
