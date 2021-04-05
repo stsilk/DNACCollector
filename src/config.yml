@@ -1,5 +1,5 @@
 dnac:
-  ip: '192.168.15.91'
+  ip: '10.99.0.6'
   username: 'steven.silk.dadm'
   password: 'asdf1234ASDF!@#$'
 elastic: 
