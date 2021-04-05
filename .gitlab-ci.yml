@@ -20,4 +20,4 @@ prepareContainer:
 deploy1:
   stage: deploy
   script:
-    - docker run -d --name dnacollector dnacollector
+    - docker run -d -e PYTHONUNBUFFERED=1 --name dnacollector dnacollector
