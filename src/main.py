@@ -29,20 +29,26 @@ def init():
     sc = TenableSC(config['tenable']['ip'])
     sc.login(config['tenable']['username'], config['tenable']['password'])
 
+def extractIPInfo(dnacResponse):
+    ipList = []
+    try:
+        for i in dnacResponse.response:
+            ipList.append(i['managementIpAddress'])
+        return ipList.sort()
+    except Exception as e:
+        return []
+
 def checkNewDevices():
     global DEVICELIST
     devices = dnac.devices.get_device_list()
-    if DEVICELIST == devices:
+    oldInventory = extractIPInfo(DEVICELIST)
+    newInventory = extractIPInfo(devices)
+    if oldInventory == newInventory:
         print("No new devices added")
         return False
     else:
-        print("Comparisson")
-        print('=============DEVICELIST=============')
-        pprint.pprint(DEVICELIST)
-        print('=============devices=============')
-        pprint.pprint(devices)
-        print("New device detected")
-        DEVICELIST = devices
+        print("New devices added")
+        DEVICELIST = newInventory
         return True
 
 init()
@@ -50,8 +56,8 @@ while True:
     result = checkNewDevices()
     if result:
         dnaIPs = []
-        for i in DEVICELIST.response:
-            dnaIPs.append(i['managementIpAddress'])
+        for i in DEVICELIST:
+            dnaIPs.append(i)
         sc.asset_lists.edit('55', ips=dnaIPs)
         results = sc.scans.launch('39')
         scanStartTime = datetime.datetime.now()
