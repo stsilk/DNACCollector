@@ -33,21 +33,24 @@ def init():
 def extractIPInfo(dnacResponse):
     logging.info("Extracting IPs from {0}".format(dnacResponse))
     ipList = []
-    try:
+    if hasattr(dnacResponse, 'response'):
         for i in dnacResponse.response:
             print(i['managementIpAddress'])
             ipList.append(i['managementIpAddress'])
         logging.info("Extracted List: {0}".format(ipList))
         return ipList
-    except Exception as e:
-        logging.warn("Could not extract IP List")
+    else:
         return []
+    
 
 def checkNewDevices():
     logging.info("Checking for new devices")
     global DEVICELIST
     devices = dnac.devices.get_device_list()
+    logging.info("Extracting IPS")
+    logging.info(DEVICELIST)
     oldInventory = extractIPInfo(DEVICELIST)
+    logging.info(devices)
     newInventory = extractIPInfo(devices)
     if oldInventory == newInventory:
         logging.info("No new devices added")
