@@ -3,6 +3,7 @@ from elasticsearch import Elasticsearch
 from tenable.sc import TenableSC
 import datetime
 import time
+import pprint
 
 es = '' #Elastic Connection
 dnac = '' #DNAC Connection
@@ -31,6 +32,11 @@ def checkNewDevices():
         print("No new devices added")
         return False
     else:
+        print("Comparisson")
+        print('=============DEVICELIST=============')
+        pprint.pprint(DEVICELIST)
+        print('=============devices=============')
+        pprint.pprint(devices)
         print("New device detected")
         DEVICELIST = devices
         return True
@@ -51,7 +57,6 @@ while True:
             print('Still waiting... Status: {0} - {1}'.format(scanStatus, datetime.datetime.now()))
             time.sleep(30)
             scanStatus = sc.scan_instances.details(runningScanID)['status']
-       
         scanEndTime = datetime.datetime.now()
         scanDuration = scanEndTime - scanStartTime
         print('Scan Completed after')
