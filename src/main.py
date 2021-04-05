@@ -33,8 +33,9 @@ def extractIPInfo(dnacResponse):
     ipList = []
     try:
         for i in dnacResponse.response:
+            print(i['managementIpAddress'])
             ipList.append(i['managementIpAddress'])
-        return ipList.sort()
+        return ipList
     except Exception as e:
         return []
 
