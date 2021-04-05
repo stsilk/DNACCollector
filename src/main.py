@@ -4,6 +4,7 @@ from tenable.sc import TenableSC
 import datetime
 import time
 import pprint
+import yaml
 
 es = '' #Elastic Connection
 dnac = '' #DNAC Connection
@@ -14,15 +15,18 @@ def init():
     global es
     global dnac
     global sc
-    es = Elasticsearch(['10.0.60.80'],
+    config = ''
+    with open('config.yml') as f:
+        config = yaml.load(f, Loader=yaml.FullLoader)
+    es = Elasticsearch(config['elasticIP'],
                         http_auth=('elastic','asdf1234ASDF!@#$'),
                         scheme="http",
                         port=9200)
-    dnac = api.DNACenterAPI(base_url='https://192.168.15.91', 
+    dnac = api.DNACenterAPI(base_url='https://{0}'.format(config['dnacIP']), 
                             username='steven.silk.dadm',
                             password='asdf1234ASDF!@#$',
                             verify=False)
-    sc = TenableSC('192.168.15.109')
+    sc = TenableSC(config['tenableIP'])
     sc.login('scanuser', '1qaz2wsx#EDC$RFV')
 
 def checkNewDevices():

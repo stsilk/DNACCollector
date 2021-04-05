@@ -1,3 +1,4 @@
 dnacentersdk
 elasticsearch
 pytenable
+pyyaml
