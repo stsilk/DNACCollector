@@ -18,16 +18,16 @@ def init():
     config = ''
     with open('config.yml') as f:
         config = yaml.load(f, Loader=yaml.FullLoader)
-    es = Elasticsearch(config['elasticIP'],
-                        http_auth=('elastic','asdf1234ASDF!@#$'),
+    es = Elasticsearch(config['elastic']['ip'],
+                        http_auth=(config['elastic']['username'],config['elastic']['password']),
                         scheme="http",
                         port=9200)
     dnac = api.DNACenterAPI(base_url='https://{0}'.format(config['dnacIP']), 
-                            username='steven.silk.dadm',
-                            password='asdf1234ASDF!@#$',
+                            username=config['cisco']['username'],
+                            password=config['cisco']['password'],
                             verify=False)
-    sc = TenableSC(config['tenableIP'])
-    sc.login('scanuser', '1qaz2wsx#EDC$RFV')
+    sc = TenableSC(config['tenable']['ip'])
+    sc.login(config['tenable']['username'], config['tenable']['password'])
 
 def checkNewDevices():
     global DEVICELIST
