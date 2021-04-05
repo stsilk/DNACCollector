@@ -22,9 +22,9 @@ def init():
                         http_auth=(config['elastic']['username'],config['elastic']['password']),
                         scheme="http",
                         port=9200)
-    dnac = api.DNACenterAPI(base_url='https://{0}'.format(config['dnacIP']), 
-                            username=config['cisco']['username'],
-                            password=config['cisco']['password'],
+    dnac = api.DNACenterAPI(base_url='https://{0}'.format(config['dnac']['ip']), 
+                            username=config['dnac']['username'],
+                            password=config['dnac']['password'],
                             verify=False)
     sc = TenableSC(config['tenable']['ip'])
     sc.login(config['tenable']['username'], config['tenable']['password'])
