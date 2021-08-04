@@ -67,6 +67,7 @@ def checkNewDevices():
         DEVICELIST = devices
         return True
 
+#Once started constantly check for new items added to DNAC inventory. If found run a pre defined scan and import results into Elastic
 init()
 while True:
     result = checkNewDevices()

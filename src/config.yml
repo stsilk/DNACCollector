@@ -1,12 +1,12 @@
 dnac:
-  ip: '10.99.0.6'
-  username: 'steven.silk.dadm'
-  password: 'asdf1234ASDF!@#$'
+  ip: '1.1.1.1'
+  username: 'notreal'
+  password: 'notreal'
 elastic: 
-  ip: '10.0.60.80'
-  username: 'elastic'
-  password: 'asdf1234ASDF!@#$'
+  ip: '1.1.1.1'
+  username: 'notreal'
+  password: 'notreal'
 tenable:
-  ip: '192.168.15.109'
-  username: 'scanuser'
-  password: '1qaz2wsx#EDC$RFV'
+  ip: '1.1.1.1'
+  username: 'notreal'
+  password: 'notreal'
